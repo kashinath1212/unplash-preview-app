@@ -2,7 +2,7 @@ import '../styles/globals.css'
 // add bootstrap css 
 import 'bootstrap/dist/css/bootstrap.css'
 import { Provider } from "react-redux";
-import { wrapper } from './Redux/store';
+import { wrapper } from '../Redux/store';
 
 
 function MyApp({ Component, ...rest }) {

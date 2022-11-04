@@ -56,7 +56,7 @@ function UnplashApi() {
                 data?.map((item, i) => {
                     return (
                         <div className='col-8 col-sm-6 col-md-4 co-lg-3 my-3' key={i} >
-                            <div style={{ cursor: 'pointer' }} onClick={() => { dispatch(ShowDetails(item)), router.push('/component/unplashDetail'), localStorage.setItem('itemDetail', JSON.stringify(item)) }}>
+                            <div style={{ cursor: 'pointer' }} onClick={() => { dispatch(ShowDetails(item)), router.push('/unplashDetail'), localStorage.setItem('itemDetail', JSON.stringify(item)) }}>
                                 <Image src={item?.urls?.regular} alt={item?.urls?.regular} blurDataURL={true} width="280" height="280" className='rounded' style={{ objectFit: "cover", minWidth: "100%" }} />
                             </div>
                             <div className='text-white text-center'>
