@@ -6,7 +6,9 @@ if (typeof window !== 'undefined') {
 }
 
 const initial = {
-    itemDetails: item
+    itemDetails: item,
+    pageno: 1,
+    query: 'dog'
 }
 
 export const DetailReducer = (state = initial, action) => {
@@ -14,7 +16,9 @@ export const DetailReducer = (state = initial, action) => {
         case DETAILS_INFO:
             return {
                 ...state,
-                itemDetails: action.payload
+                itemDetails: action.payload,
+                pageno: action.pageno,
+                query: action.query
             }
         default:
             return state

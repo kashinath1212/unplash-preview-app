@@ -1,8 +1,10 @@
 import { DETAILS_INFO } from "./Constant"
 
-export const ShowDetails = (item) => {
+export const ShowDetails = (item, pageno, query) => {
     return{
         type: DETAILS_INFO,
-        payload: item
+        payload: item,
+        pageno,
+        query
     }
 }

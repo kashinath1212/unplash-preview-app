@@ -8,17 +8,28 @@ import Slider from 'react-slick';
 
 
 function UnplashApi() {
+    const { details, products } = useSelector(state => state)
     const [data, setData] = useState();
     const [input, setInput] = useState("")
-    const [query, setQuery] = useState('dog')
-    const [pageno, setPageno] = useState(1)
+    const [query, setQuery] = useState(details?.query)
+    const [page, setPage] = useState([])
+    const [pageno, setPageno] = useState(details?.pageno)
     const dispatch = useDispatch()
     const router = useRouter()
+    useEffect(() => {
+        setPage([])
+        let count = products?.data?.data?.total_pages
+        let k = []
+        for (let i = 1; i <= count; i++) {
+            k.push(i)
+            setPage(k)
+        }
+    }, [products?.data?.data?.total_pages])
+    console.log(page, "log");
 
-    const { products } = useSelector(state => state)
     useEffect(() => {
         setData(products?.data?.data?.results)
-    }, [products])
+    }, [products, details])
     useEffect(() => {
         dispatch(ProductDetails(pageno, query))
     }, [pageno, query, dispatch])
@@ -30,12 +41,13 @@ function UnplashApi() {
     }
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 10,
         slidesToScroll: 5
     };
+    // console.log(data, "log");
 
     // const myLoader = ({ src, width, quality }) => {
     //     return `${src}?w=${width}&q=${quality || 75}`
@@ -50,11 +62,11 @@ function UnplashApi() {
                 </form>
                 <div className='mx-5 mt-4'>
                     <Slider {...settings}>
-                        {data && data?.map((item, i) => {
+                        {page && page?.map((item, i) => {
                             return (
                                 <div className='d-flex justify-content-center' key={i} >
-                                    <p className={`p-2 text-center ${pageno === i + 1 ? 'bg-primary' : "bg-warning"}`} style={{ borderRadius: '50px', width: '40px', height: '40px', cursor: "pointer" }} onClick={() => setPageno(i + 1)}>
-                                        {i + 1}
+                                    <p className={`p-2 text-center ${pageno === item ? 'bg-primary' : "bg-warning"}`} style={{ borderRadius: '50px', width: '40px', height: '40px', cursor: "pointer" }} onClick={() => { setPageno(item), dispatch(ShowDetails({}, item)) }}>
+                                        {item}
                                     </p>
                                 </div>
                             )
@@ -66,7 +78,7 @@ function UnplashApi() {
                 data?.map((item, i) => {
                     return (
                         <div className='col-8 col-sm-6 col-md-4 co-lg-3 my-3' key={i} >
-                            <div style={{ cursor: 'pointer' }} onClick={() => { dispatch(ShowDetails(item)), router.push('/unplashDetail'), localStorage.setItem('itemDetail', JSON.stringify(item)) }}>
+                            <div style={{ cursor: 'pointer' }} onClick={() => { dispatch(ShowDetails(item, pageno, query)), router.push('/unplashDetail'), localStorage.setItem('itemDetail', JSON.stringify(item)) }}>
                                 <Image src={item?.urls?.regular} alt={item?.urls?.regular} blurDataURL={true} width="280" height="280" className='rounded' style={{ objectFit: "cover", minWidth: "100%" }} />
                             </div>
                             <div className='text-white text-center'>
