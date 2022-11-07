@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ShowDetails } from '../Redux/Details/Action';
 import { useRouter } from 'next/router';
 import { ProductDetails } from '../Redux/Details/ProductAction';
+import Slider from 'react-slick';
 
 
 function UnplashApi() {
-    const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const [data, setData] = useState();
     const [input, setInput] = useState("")
     const [query, setQuery] = useState('dog')
@@ -26,8 +26,16 @@ function UnplashApi() {
     const submitHandler = (e) => {
         e.preventDefault()
         setQuery(input)
-        setPageno('1')
+        setPageno(1)
     }
+
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 10,
+        slidesToScroll: 5
+    };
 
     // const myLoader = ({ src, width, quality }) => {
     //     return `${src}?w=${width}&q=${quality || 75}`
@@ -40,16 +48,18 @@ function UnplashApi() {
                     <input type='text' className='form-control w-25' name="name" required value={input} onChange={(e) => { e.preventDefault(); setInput(e.target.value) }} />
                     <button type='submit' className='btn btn-primary mx-2'>search</button>
                 </form>
-                <div className='d-flex justify-content-center mt-4'>
-                    {pages?.map((item, i) => {
-                        return (
-                            <div className='m-2' key={i} >
-                                <p className={`p-2 text-center ${pageno === item ? 'bg-primary' : "bg-warning"}`} style={{ borderRadius: '50px', width: '40px', height: '40px', cursor: "pointer" }} onClick={() => setPageno(item)}>
-                                    {item}
-                                </p>
-                            </div>
-                        )
-                    })}
+                <div className='mx-5 mt-4'>
+                    <Slider {...settings}>
+                        {data && data?.map((item, i) => {
+                            return (
+                                <div className='d-flex justify-content-center' key={i} >
+                                    <p className={`p-2 text-center ${pageno === i + 1 ? 'bg-primary' : "bg-warning"}`} style={{ borderRadius: '50px', width: '40px', height: '40px', cursor: "pointer" }} onClick={() => setPageno(i + 1)}>
+                                        {i + 1}
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </Slider>
                 </div>
             </div>
             {data && !data?.length ? (<h1>No data found!...</h1>) :

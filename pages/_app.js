@@ -1,6 +1,8 @@
 import '../styles/globals.css'
 // add bootstrap css 
 import 'bootstrap/dist/css/bootstrap.css'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Provider } from "react-redux";
 import { wrapper } from '../Redux/store';
 
